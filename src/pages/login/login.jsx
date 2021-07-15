@@ -35,7 +35,7 @@ class Login extends Component {
     } else if (value.length<4) {
       callBack('密码大于4位')
     } else if (value.length>12) {
-      callBack('密码小鱼12位')
+      callBack('密码小于12位')
     } else if (!(/^[a-zA-Z0-9_]+$/.test(value))) {
       callBack('必须数字英文下划线')
     } else{
