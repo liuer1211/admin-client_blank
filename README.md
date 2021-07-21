@@ -51,6 +51,12 @@
     3. 路由
         下载路由包: yarn add react-router-dom
 
+    4. axios
+        下载：npm install axios
+
+    5. 跨域 (fetch,xml)
+        代理配置："proxy": "http://localhost:5000"
+
 # 页面
     1. login 登录
         引入antd
@@ -58,4 +64,4 @@
         高阶函数
         高阶组件
 
-    24
+    27

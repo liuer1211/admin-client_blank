@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
+import {reqLogin} from '../../api'
+import memoryUtils from '../../utils/memoryUtils'
 
 import './login.less'
 
@@ -9,11 +11,35 @@ class Login extends Component {
   // 提交
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       // 校验成功
       if (!err) {
+        const {username, password} = values
+        // reqLogin(username, password).then(
+        //   res=>{
+        //     console.log(res)
+        //   },
+        //   err=>{
+        //     console.log(err)
+        //   }
+        // )
+        
+        const result = await reqLogin(username, password)
+        if (result.status===0) {
+          message.success('登陆成功')
 
-        console.log('数据: ', values);
+          const user = result.data
+          memoryUtils.user = user
+
+          console.log(user)
+
+          // 不需要回退到登录
+          // this.props.history.push('/')
+          this.props.history.replace('/')
+        } else {
+          message.error(result.msg)
+        }
+
       } else {
         console.log('校验失败')
       }
