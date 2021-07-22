@@ -15,7 +15,8 @@ export default function ajax(url,data={},type='GET'){
         promise.then(resp=>{
             res(resp.data)
         }).catch(err=>{
-            // rej(err)
+            // 异常传出，可以在各自的方法上做为伪数据 - 这块方便演示查看
+            rej(err)
             message.error(err.message)
         })
         

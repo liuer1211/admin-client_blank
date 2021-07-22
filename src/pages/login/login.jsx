@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import { Form, Icon, Input, Button, message } from 'antd';
+
 import {reqLogin} from '../../api'
 import memoryUtils from '../../utils/memoryUtils'
+import storageUtils from '../../utils/storageUtils'
 
 import './login.less'
 
@@ -15,29 +18,45 @@ class Login extends Component {
       // 校验成功
       if (!err) {
         const {username, password} = values
-        // reqLogin(username, password).then(
-        //   res=>{
-        //     console.log(res)
-        //   },
-        //   err=>{
-        //     console.log(err)
-        //   }
-        // )
-        
-        const result = await reqLogin(username, password)
-        if (result.status===0) {
-          message.success('登陆成功')
 
-          const user = result.data
-          memoryUtils.user = user
+        const data = {
+          create_time: 1626874402124,
+          password: "21232f297a57a5a743894a0e4a801fc3",
+          role: {menus: []},
+          menus: [],
+          username: "admin",
+          __v: 0,
+          _id: "60f822221a00151314d2626a"
+        }
 
-          console.log(user)
+        try {
+          const result = await reqLogin(username, password)
+          if (result.status===0) {
+            message.success('登陆成功')
 
-          // 不需要回退到登录
-          // this.props.history.push('/')
+            const user = result.data
+            // 存到内存里
+            memoryUtils.user = user
+            // 存到本地
+            storageUtils.saveUser(user)
+
+            console.log(user)
+
+            // 不需要回退到登录
+            // this.props.history.push('/')
+            this.props.history.replace('/')
+          } else {
+            message.error(result.msg)
+          }
+        } catch (e) {
+          // 获取伪数据
+          message.error('接口异常-使用伪数据')
+          // 存到内存里
+          memoryUtils.user = data
+          // 存到本地
+          storageUtils.saveUser(data)
+          // 跳转
           this.props.history.replace('/')
-        } else {
-          message.error(result.msg)
         }
 
       } else {
@@ -70,6 +89,15 @@ class Login extends Component {
   }
 
   render() {
+    // 如果用户登录，跳转到首页
+    const user = memoryUtils.user
+    // 当前没有用户
+    if (user && user._id) {
+      // 自动跳转登录
+      return <Redirect to='/'/>
+    }
+
+    // 得到具有强大功能的from对象
     const form = this.props.form
     const {getFieldDecorator} = form
 
@@ -77,6 +105,7 @@ class Login extends Component {
       // 主体
       <div className="login-main">
         <div className="login-model">
+          <div className="login-tit">用户登录</div>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
               {
@@ -111,7 +140,7 @@ class Login extends Component {
                 }
             </Item>
             <Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">
+              <Button type="primary" block htmlType="submit" className="login-form-button">
                 登录
               </Button>
             </Item>

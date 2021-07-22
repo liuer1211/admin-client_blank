@@ -56,6 +56,9 @@
 
     5. 跨域 (fetch,xml)
         代理配置："proxy": "http://localhost:5000"
+    
+    6. 缓存store
+        下载：npm install store
 
 # 页面
     1. login 登录
@@ -63,5 +66,7 @@
         表单验证
         高阶函数
         高阶组件
+
+    2. admin 首页后台
 
     27
