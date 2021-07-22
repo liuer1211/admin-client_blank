@@ -1,6 +1,13 @@
 ## 介绍
     react 管理台项目
 
+# 访问
+    manifest,json 中配置 "start_url": "./index.html"
+    package.json 中配置 "homepage": "./" 
+    在github中设置访问地址，然后即可访问
+   [点我访问](https://liuer1211.github.io/admin-client_blank/build)
+    
+
 ## 基本操作
     yarn install
     yarn start
