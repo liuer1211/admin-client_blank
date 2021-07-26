@@ -2,59 +2,12 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, Icon } from 'antd';
 
-import menuList from '../../config/menuConfig';
-
 import logo from '../../assets/images/logo.png'
 import './index.less'
 
 const { SubMenu } = Menu;
 
 export default class LeftNav extends Component{
-
-    /*
-        根据menu的数据数组生成对应的标签数组 
-        map + 递归调用
-    */
-    getMenuNodes = (menuList) => {
-        return menuList.map(item=>{
-            // 单个菜单
-            if (!item.children) {
-                return (
-                    <Menu.Item key={item.key}>
-                        <Link to={item.key}>
-                            <Icon type={item.icon} />
-                            <span>{item.title}</span>
-                        </Link>
-                    </Menu.Item>
-                )
-            } else { // 含有子菜单
-                return (
-                    <SubMenu
-                        key={item.key}
-                        title={
-                            <span>
-                                <Icon type={item.icon} />
-                                <span>{item.title}</span>
-                            </span>
-                        }
-                    >
-                        {/* 递归 */}
-                        { this.getMenuNodes(item.children) }
-                    </SubMenu>
-                )
-            }
-        })
-    }
-
-    /*
-        根据menu的数据数组生成对应的标签数组 
-        reduce + 递归调用
-    */
-    getMenuNodes_map = (menuList) => {
-        return ;
-    }
-
-
     render() {
         return (
             <div className="left-nav">
@@ -67,7 +20,8 @@ export default class LeftNav extends Component{
                     mode="inline"
                     theme="dark"
                 >
-                    {/* <Menu.Item key="1">
+                    
+                    <Menu.Item key="1">
                         <Link to='/home'>
                             <Icon type="pie-chart" />
                             <span>首页</span>
@@ -95,11 +49,50 @@ export default class LeftNav extends Component{
                                 <span>商品管理</span>
                             </Link>
                         </Menu.Item>
-                    </SubMenu> */}
-                    {/* 获取菜单 */}
-                    {
-                        this.getMenuNodes(menuList)
-                    }
+                    </SubMenu>
+
+                    <Menu.Item key="4">
+                        <Link to='/role'>
+                            <Icon type="pie-chart" />
+                            <span>权限</span>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="5">
+                        <Link to='/user'>
+                            <Icon type="pie-chart" />
+                            <span>用户管理</span>
+                        </Link>
+                    </Menu.Item>
+                    
+                    <SubMenu
+                        key="sub2"
+                        title={
+                            <span>
+                                <Icon type="mail" />
+                                <span>图表</span>
+                            </span>
+                        }
+                    >
+                        <Menu.Item key="6">
+                            <Link to='/chart/pie'>
+                                <Icon type="mail" />
+                                <span>饼状图</span>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="7">
+                            <Link to='/chart/bar'>
+                                <Icon type="mail" />
+                                <span>柱状图</span>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="8">
+                            <Link to='/chart/line'>
+                                <Icon type="mail" />
+                                <span>折线图</span>
+                            </Link>
+                        </Menu.Item>
+                    </SubMenu>
+
                 </Menu>
             </div>
         )

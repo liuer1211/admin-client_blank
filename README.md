@@ -60,6 +60,7 @@
 
     4. axios
         下载：npm install axios
+        封装axios,后台交互
 
     5. 跨域 (fetch,xml)
         代理配置："proxy": "http://localhost:5000"
@@ -67,17 +68,24 @@
     6. 缓存store
         下载：npm install store
 
+    7. 后端项目
+        npm i
+        npm start
+
 # 页面
     1. login 登录
         引入antd
-        表单验证
+        表单验证: antd自带控件
         高阶函数
         高阶组件
 
     2. admin 首页后台
         layout 布局
-        菜单栏
-        头部
-        内容
+            菜单栏：
+                多个路由菜单，动态生成
+            头部
+            内容: 
+                多个路由菜单，指向对应页面
+
 
     29
