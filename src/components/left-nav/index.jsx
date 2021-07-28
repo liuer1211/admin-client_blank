@@ -51,6 +51,9 @@ class LeftNav extends Component{
         reduce + 递归调用
     */
     getMenuNodes = (menuList) => {
+        // 得到当前路径
+        const path = this.props.location.pathname
+
         return menuList.reduce((pre,item)=>{
             // pre添加<menu.Item>
             if (!item.children) {
@@ -63,6 +66,17 @@ class LeftNav extends Component{
                     </Menu.Item>)
                 )
             } else { // pre添加<SubMenu>
+
+                // 当前子菜单选中，并是打开状态，刷新页面，会被闭合--解决这个bug
+                // 查找一个与当前请求路径匹配的子item
+                const citem = item.children.find(citem=>
+                    citem.key === path
+                )
+                // 如果存在，说明当前item的字列表需要打开
+                if(citem) {
+                    this.openKey = item.key;
+                }
+                
                 pre.push(
                     (<SubMenu
                         key={item.key}
@@ -82,10 +96,24 @@ class LeftNav extends Component{
         },[])
     }
 
+    /*
+        在第一次render()之前执行一次
+        为第一个render()准备数据（必须同步的）
+    */
+    componentWillMount() {
+        console.log(this)
+        // 得到节点,先进行读节点---------
+        this.menuNodes = this.getMenuNodes(menuList)
+    }
 
     render() {
+
         // 得到当前路径
         const path = this.props.location.pathname
+
+        // 得到需要打开菜单项的key，再获得openKey-------
+        const openKey = this.openKey
+
         return (
             <div className="left-nav">
                 <Link to='/' className="left-nav-header">
@@ -94,7 +122,7 @@ class LeftNav extends Component{
                 </Link>
                 <Menu
                     selectedKeys={[path]}
-                    defaultOpenKeys={['']}
+                    defaultOpenKeys={[openKey]}
                     mode="inline"
                     theme="dark"
                 >
@@ -129,7 +157,7 @@ class LeftNav extends Component{
                     </SubMenu> */}
                     {/* 获取菜单 */}
                     {
-                        this.getMenuNodes(menuList)
+                        this.menuNodes
                     }
                 </Menu>
             </div>
