@@ -86,11 +86,18 @@
                 多个路由菜单，动态生成: 循环渲染
                 非路由组件，变成一个路由组件：withRouter
                 根据menu的数据数组生成对应的标签数组：reduce + 递归调用
-                在第一次render()之前执行一次：componentWillMount
-            头部
+                componentWillMount():
+                    在第一次render()之前执行一次
+            头部:
+                天气预报：百度-自行申请key
+                下载：yarn add json; 跨域
+                时间：定时器
+                componentDidMount():
+                    第一次render（）后执行一次
+                    一般再次执行异步操作：发Ajax请求、启动定时器
             内容: 
                 多个路由菜单，指向对应页面
                 
 
 
-    37
+    40

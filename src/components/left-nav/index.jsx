@@ -101,7 +101,7 @@ class LeftNav extends Component{
         为第一个render()准备数据（必须同步的）
     */
     componentWillMount() {
-        console.log(this)
+        // console.log(this)
         // 得到节点,先进行读节点---------
         this.menuNodes = this.getMenuNodes(menuList)
     }
