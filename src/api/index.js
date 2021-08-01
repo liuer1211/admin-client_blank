@@ -1,6 +1,6 @@
 import ajax from "./ajax";
-import jsonp from 'jsonp'
-import { message } from "antd";
+// import jsonp from 'jsonp'
+// import { message } from "antd";
 
 // 每个接口返回都是promise
 
@@ -19,12 +19,10 @@ export const reqAddUser = (user) => ajax(BASE + '/manage/user/add', user, 'POST'
 // 天气信息
 
 export const reqWeather = (city) => {
-    console.log(city)
     return {dayPictureUrl: 'http://api.map.baidu.com/images/weather/day/qing.png', weather: '晴'};
     // return new Promise((resolve, reject)=>{
     //     const url = `http://api.map.baidu.com/telematics/v3/weather?location=${city}&output=json&ak=6c0621701e4f8f0327b48bff7d67291e`;
     //     jsonp(url, {}, (err,data)=>{
-    //         console.log(err,data)
     //         if(!err && data.status === 'success') {
     //             const {dayPictureUrl, weather} = data.results[0].weather_data[0];
     //             resolve({dayPictureUrl, weather});

@@ -12,6 +12,7 @@
     yarn install
     yarn start
     yarn build
+    http://localhost:3000
 
 ## 依赖添加
     1. 基本-脚手架初始

@@ -3,6 +3,8 @@ import React, {Component} from 'react'
 import {formateDate} from '../../utils/dateUtils'
 import memoryUtils from "../../utils/memoryUtils";
 
+import {reqWeather} from "../../api/index"
+
 import './index.less'
 
 export default class Header extends Component{
@@ -21,10 +23,21 @@ export default class Header extends Component{
         },1000)
     }
 
+    // 更新天气
+    getWeather= async () => {
+        // 获得接口数据
+       const {dayPictureUrl, weather} = await reqWeather('上海')
+       this.setState({dayPictureUrl, weather})
+    }
+    
+
     // 第一次render（）后执行一次
     // 一般再次执行异步操作：发Ajax请求、启动定时器
     componentDidMount() {
+        // 获得时间
         this.getTime();
+        // 获得天气
+        this.getWeather();
     }
 
     render() {
@@ -37,7 +50,7 @@ export default class Header extends Component{
             <div className="header">
                 <div className="header-top">
                     <span>欢迎，{user}</span>
-                    <a href="javascript">退出</a>
+                    {/* <a href="#">退出</a> */}
                 </div>
                 <div className="header-bot">
                     <div className="header-bot-l">首页</div>
