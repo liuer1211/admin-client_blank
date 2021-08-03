@@ -96,9 +96,16 @@
                 componentDidMount():
                     第一次render（）后执行一次
                     一般再次执行异步操作：发Ajax请求、启动定时器
+                componentWillUnmount()：
+                    当前组件卸载前执行，清除定时器
+                title: 遍历
+                定义函数型组件
             内容: 
                 多个路由菜单，指向对应页面
-                
+    3. category 商品
+        UI 组件：Card Table
+        接口定义：查询 添加 更新
+                    
 
 
-    44
+    48

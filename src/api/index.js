@@ -15,6 +15,18 @@ export const reqLogin = (username, password) => ajax(BASE + '/login', {username,
 // 添加用户
 export const reqAddUser = (user) => ajax(BASE + '/manage/user/add', user, 'POST')
 
+// 商品分类 一级、二级
+export const reqCategorys= (parentId) => ajax(BASE + '/manage/category/list', {parentId});
+// 添加商品分类
+export const reqAddCategory= (categoryName, parentId) => ajax(BASE + '/manage/category/add', {categoryName, parentId}, 'post');
+// 添加商品分类
+export const reqUpdateCategory= ({categoryName, parentId}) => ajax(BASE + '/manage/category/update', {categoryName, parentId}, 'post');
+
+
+
+
+
+
 // jsonp 请求的接口请求函数
 // 天气信息
 
