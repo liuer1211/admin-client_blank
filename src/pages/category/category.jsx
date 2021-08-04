@@ -183,7 +183,7 @@ export default class Category extends Component{
             </Button>
         )
 
-        const {categorys, subCategorys, parentId, parentName, loading} = this.state
+        const {categorys, subCategorys, parentId, loading} = this.state
             
         return (
             <div>
