@@ -105,7 +105,28 @@
     3. category 商品
         UI 组件：Card Table
         接口定义：查询 添加 更新
-                    
+        setState:
+            // 更新状态，此方法为异步
+            this.setState({
+                parentId: category._id,
+                parentName: category.name,
+            },()=>{
+                // 在状态更新且重新render()后执行
+                // 二级分类列表
+                this.getDate();
+            })
+        onClick:
+        {/* 
+            这种方式，进来会立即执行
+            <LinkButton onClick={this.getSubCate(category)}>查看子分类</LinkButton> 
+            这种写，进来不调，点击时候调，但不能传参数
+            <LinkButton onClick={this.getSubCate}>查看子分类</LinkButton> 
+            如何将事件回调函数，传递参数：先定义匿名函数，再函数调用处理的函数并传入数据
+        */}
+        <LinkButton onClick={()=>this.getSubCate(category)}>查看子分类</LinkButton>
+        修改：
+            Modal
+            组件传值         
 
 
-    50
+    52

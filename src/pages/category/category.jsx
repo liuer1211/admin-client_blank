@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Card, Button, Icon, Table, message } from 'antd';
+import { Card, Button, Icon, Table, message, Modal } from 'antd';
 
 import LinkButton from '../../components/link-button';
 import { reqCategorys } from '../../api';
@@ -13,6 +13,7 @@ export default class Category extends Component{
         subCategorys: [], // 二级分类列表
         parentId: '0', // 分类id
         parentName: '', // 分类名称
+        showStatus: '0', // 弹出框显示隐藏 0：都隐藏；1：添加；2：更新
     }
 
     // 获得列表数据(一级、二级)
@@ -116,6 +117,17 @@ export default class Category extends Component{
         }
     }
 
+    // 点击二级分类里边的一级分类标题
+    showCate = () =>{
+        this.setState(
+            {
+                parentId: '0', // 分类id
+                subCategorys: [], // 二级分类列表
+                parentName: '', // 分类名称
+            }
+        )
+    }
+
     // table列表
     getInitColums = () => {
         this.columns = [
@@ -129,7 +141,7 @@ export default class Category extends Component{
                 width: 300,
                 render: (category) =>(
                      <span>
-                        <LinkButton>修改</LinkButton>
+                        <LinkButton onClick={()=>this.cateUpdate(category)}>修改</LinkButton>
                         {/* 
                             这种方式，进来会立即执行
                             <LinkButton onClick={this.getSubCate(category)}>查看子分类</LinkButton> 
@@ -137,7 +149,10 @@ export default class Category extends Component{
                             <LinkButton onClick={this.getSubCate}>查看子分类</LinkButton> 
                             如何将事件回调函数，传递参数：先定义匿名函数，再函数调用处理的函数并传入数据
                         */}
-                        <LinkButton onClick={()=>this.getSubCate(category)}>查看子分类</LinkButton>
+                        {
+                            this.state.parentId === '0' ? 
+                            <LinkButton onClick={()=>this.getSubCate(category)}>查看子分类</LinkButton> : null
+                        }
                     </span>
                 )
             },
@@ -160,6 +175,27 @@ export default class Category extends Component{
         // this.getDate();
     }
 
+    // 添加
+    cateAdd = () => {
+        this.setState({showStatus: '1'})
+    }
+
+    // 更新
+    cateUpdate = category => {
+        this.setState({showStatus: '2'})
+        console.log(category)
+    }
+
+    // 取消
+    handleCancel = () => {
+        this.setState({showStatus: '0'})
+    }
+
+    // 确定
+    handleOk = () => {
+        this.setState({showStatus: '0'})
+    }
+
     // 为第一次render()准备数据
     componentWillMount() {
         this.getInitColums();
@@ -172,19 +208,24 @@ export default class Category extends Component{
     }
 
     render() {
-
+        const {categorys, subCategorys, parentId, loading, parentName} = this.state
         // console.log(this.state)
         // console.log(this.props)
 
-        const title = '一级分类'
+        // 这里的title 可以传 字符串 | dom节点
+        const title = parentId === '0' ? '一级分类' : (
+            <span>
+                <LinkButton onClick={this.showCate}>一级分类</LinkButton>
+                <Icon type="right"></Icon>
+                {parentName}
+            </span>
+        )
         const extra = (
-            <Button type="primary">
+            <Button type="primary" onClick={this.cateAdd}>
                 <Icon type="plus" />添加
             </Button>
         )
 
-        const {categorys, subCategorys, parentId, loading} = this.state
-            
         return (
             <div>
                 <Card title={title} extra={extra} >
@@ -197,6 +238,29 @@ export default class Category extends Component{
                         pagination={{defaultPageSize:5,showQuickJumper:true}}
                     />
                 </Card>
+
+                {/* 添加 */}
+                <Modal
+                    title="添加"
+                    visible={this.state.showStatus==='1'}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Modal>
+                {/* 更新 */}
+                <Modal
+                    title="更新"
+                    visible={this.state.showStatus==='2'}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Modal>
             </div>
         )
     }
