@@ -19,8 +19,8 @@ export const reqAddUser = (user) => ajax(BASE + '/manage/user/add', user, 'POST'
 export const reqCategorys= (parentId) => ajax(BASE + '/manage/category/list', {parentId});
 // 添加商品分类
 export const reqAddCategory= (categoryName, parentId) => ajax(BASE + '/manage/category/add', {categoryName, parentId}, 'post');
-// 添加商品分类
-export const reqUpdateCategory= ({categoryName, parentId}) => ajax(BASE + '/manage/category/update', {categoryName, parentId}, 'post');
+// 修改商品分类
+export const reqUpdateCategory= ({categoryName, categoryId}) => ajax(BASE + '/manage/category/update', {categoryName, categoryId}, 'post');
 
 
 

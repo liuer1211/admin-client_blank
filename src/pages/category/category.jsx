@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import AddForm from './add-form'
+import UpdateForm from './update-form'
+
 import { Card, Button, Icon, Table, message, Modal } from 'antd';
 
 import LinkButton from '../../components/link-button';
-import { reqCategorys } from '../../api';
+import { reqCategorys, reqUpdateCategory } from '../../api';
 
 export default class Category extends Component{
 
@@ -182,18 +185,40 @@ export default class Category extends Component{
 
     // 更新
     cateUpdate = category => {
+        // 保存数据，向子组件传递
+        this.cateUpdateDate = category
         this.setState({showStatus: '2'})
-        console.log(category)
+        // console.log(category)
     }
 
     // 取消
     handleCancel = () => {
         this.setState({showStatus: '0'})
+        // 清除输入数据
+        this.form.resetFields()
+
+        // console.log(this.form, this.cateUpdateDate)
     }
 
-    // 确定
-    handleOk = () => {
+    // 确定  更新 - 添加
+    handleOk = async () => {
+        // 1. 隐藏框
         this.setState({showStatus: '0'})
+
+        const categoryId = this.cateUpdateDate._id
+        // 函数传参，接受form对象
+        const categoryName = this.form.getFieldValue('categoryName')
+
+        // 清除输入数据
+        this.form.resetFields()
+
+        // 2. 发请求
+        const result = await reqUpdateCategory({categoryName, categoryId})
+
+        if (result.status === 0) {
+            // 3. 重新显示列表
+            this.getDate()
+        }
     }
 
     // 为第一次render()准备数据
@@ -209,6 +234,11 @@ export default class Category extends Component{
 
     render() {
         const {categorys, subCategorys, parentId, loading, parentName} = this.state
+
+        //  更新-子组件传参
+        const {name} = this.cateUpdateDate || {}
+
+
         // console.log(this.state)
         // console.log(this.props)
 
@@ -225,6 +255,8 @@ export default class Category extends Component{
                 <Icon type="plus" />添加
             </Button>
         )
+
+
 
         return (
             <div>
@@ -246,9 +278,7 @@ export default class Category extends Component{
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <AddForm/>
                 </Modal>
                 {/* 更新 */}
                 <Modal
@@ -257,9 +287,10 @@ export default class Category extends Component{
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <UpdateForm 
+                        categoryName={name}
+                        setForm ={(form)=>{this.form = form}}
+                    />
                 </Modal>
             </div>
         )

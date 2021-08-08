@@ -126,7 +126,17 @@
         <LinkButton onClick={()=>this.getSubCate(category)}>查看子分类</LinkButton>
         修改：
             Modal
-            组件传值         
+            组件传值:
+                父：
+                <UpdateForm 
+                    categoryName={name}
+                    setForm ={(form)=>{this.form = form}}
+                /> 
+                子：
+                static propTypes = {
+                    categoryName: PropTypes.string.isRequired,
+                    setForm: PropTypes.func.isRequired
+                }       
 
 
     52
