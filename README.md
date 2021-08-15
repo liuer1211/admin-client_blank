@@ -70,6 +70,7 @@
         下载：npm install store
 
     7. 后端项目
+        进入/server目录下
         npm i
         npm start
 
@@ -136,7 +137,15 @@
                 static propTypes = {
                     categoryName: PropTypes.string.isRequired,
                     setForm: PropTypes.func.isRequired
-                }       
+                }      
+                this.props.setForm(this.props.form) 
+                子组件不能直接改变父组件的状态
+                状态在那个组件，更新状态的行为就应该定义在那个组件
+                解决：父组件定义函数，传递给子组件，子组件调用
+        添加：
+            子组件：显示下拉列
+                   下拉默认一级分类id=0
+            在二级分类添加其他级别数据 - 更新数据情况 - 查询整个数据情况
+            表单校验
 
-
-    52
+    58

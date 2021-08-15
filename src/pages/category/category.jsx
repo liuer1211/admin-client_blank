@@ -6,7 +6,7 @@ import UpdateForm from './update-form'
 import { Card, Button, Icon, Table, message, Modal } from 'antd';
 
 import LinkButton from '../../components/link-button';
-import { reqCategorys, reqUpdateCategory } from '../../api';
+import { reqCategorys, reqUpdateCategory, reqAddCategory } from '../../api';
 
 export default class Category extends Component{
 
@@ -20,10 +20,11 @@ export default class Category extends Component{
     }
 
     // 获得列表数据(一级、二级)
-    getDate = async () => {
+    // parentId: 如果没有指定根据状态中的parentId请求，如果指定了根据指定的请求
+    getDate = async (parentId) => {
         try {
             // console.log(this.state)
-            const {parentId} = this.state;
+            parentId = parentId || this.state.parentId;
             this.setState({
                 loading: true,
             })
@@ -55,55 +56,25 @@ export default class Category extends Component{
             const {parentId} = this.state;
             const categorys = [
                 {
-                    parentId: '0',
-                    _id: '11111',
-                    name: '家用电器',
-                    _v: 0,
+                    name: "一级分类10",
+                    parentId: "0",
+                    __v: 0,
+                    _id: "610a8ba0f32ee70ef0a7c912",
                 },
                 {
-                    parentId: '0',
-                    _id: '22222',
-                    name: '电脑',
-                    _v: 0,
-                },
-                {
-                    parentId: '0',
-                    _id: '33333',
-                    name: '家用电器',
-                    _v: 0,
-                },
-                {
-                    parentId: '0',
-                    _id: '44444',
-                    name: '电脑',
-                    _v: 0,
-                },
-                {
-                    parentId: '0',
-                    _id: '55555',
-                    name: '家用电器',
-                    _v: 0,
-                },
-                {
-                    parentId: '0',
-                    _id: '66666',
-                    name: '家用电器',
-                    _v: 0,
+                    name: "电脑",
+                    parentId: "0",
+                    __v: 0,
+                    _id: "610a8bbdf32ee70ef0a7c913",
                 },
             ];
             const subCategorys = [
                 {
-                    parentId: '0',
-                    _id: '11111',
-                    name: '家用电器1',
-                    _v: 0,
-                },
-                {
-                    parentId: '0',
-                    _id: '22222',
-                    name: '电脑1',
-                    _v: 0,
-                },
+                    name: "电脑1",
+                    parentId: "610a8ba0f32ee70ef0a7c912",
+                    __v: 0,
+                    _id: "610a9791f32ee70ef0a7c914",
+                }
             ];
             if (parentId === '0') {
                 this.setState({
@@ -193,31 +164,86 @@ export default class Category extends Component{
 
     // 取消
     handleCancel = () => {
-        this.setState({showStatus: '0'})
-        // 清除输入数据
-        this.form.resetFields()
+        try {
+            this.setState({showStatus: '0'})
+            // 清除输入数据
+            this.form.resetFields()
 
-        // console.log(this.form, this.cateUpdateDate)
+            // console.log(this.form, this.cateUpdateDate)
+        } catch (e) {
+            console.log(e);
+        }
     }
 
-    // 确定  更新 - 添加
-    handleOk = async () => {
-        // 1. 隐藏框
-        this.setState({showStatus: '0'})
+    // 确定 添加
+    handleOk1 = () => {
+        try {
+            this.form.validateFields(async (err,values)=>{
+                if (!err){
+                    // 1. 隐藏框
+                    this.setState({showStatus: '0'})
 
-        const categoryId = this.cateUpdateDate._id
-        // 函数传参，接受form对象
-        const categoryName = this.form.getFieldValue('categoryName')
+                    // const categoryId = this.cateUpdateDate._id
+                    // 函数传参，接受form对象
+                    const {categoryName,parentId} = values;
 
-        // 清除输入数据
-        this.form.resetFields()
+                    // 清除输入数据
+                    this.form.resetFields()
 
-        // 2. 发请求
-        const result = await reqUpdateCategory({categoryName, categoryId})
+                    // 2. 发请求
+                    const result = await reqAddCategory(categoryName, parentId)
 
-        if (result.status === 0) {
-            // 3. 重新显示列表
-            this.getDate()
+                    if (result.status === 0) {
+                        if(parentId === this.state.parentId) { // 二级分类添加非其他二级分类
+                            // 3. 重新显示列表
+                            this.getDate()
+                        } else if(parentId === '0') { // 二级分类添加一级分类
+                            // 3. 重新显示列表
+                            // this.setState({parentId: '0'}, () => {
+                            //     this.getDate()
+                            // })
+                            this.getDate('0')
+                        }
+                    }
+                    message.success('添加成功');
+                }
+            });
+        } catch (e) {
+            this.setState({showStatus: '0'})
+            message.error('接口异常 增删改 不做处理！')
+        }
+    }
+    
+    // 确定 更新
+    handleOk = () => {
+        try {
+            this.form.validateFields(async (err,values)=>{
+                if (!err){
+                    // 1. 隐藏框
+                    this.setState({showStatus: '0'})
+
+                    const categoryId = this.cateUpdateDate._id
+                    // 函数传参，接受form对象
+                    // const categoryName = this.form.getFieldValue('categoryName')
+                    const {categoryName} =values;
+
+                    // 清除输入数据
+                    this.form.resetFields()
+
+                    // 2. 发请求
+                    const result = await reqUpdateCategory({categoryName, categoryId})
+
+                    if (result.status === 0) {
+                        // 3. 重新显示列表
+                        this.getDate()
+                    }
+
+                    message.success('更新成功');
+                }
+            })
+        } catch (e) {
+            this.setState({showStatus: '0'})
+            message.error('接口异常 增删改 不做处理！')
         }
     }
 
@@ -275,10 +301,14 @@ export default class Category extends Component{
                 <Modal
                     title="添加"
                     visible={this.state.showStatus==='1'}
-                    onOk={this.handleOk}
+                    onOk={this.handleOk1}
                     onCancel={this.handleCancel}
                     >
-                    <AddForm/>
+                    <AddForm 
+                        categorys={categorys} 
+                        parentId={parentId} 
+                        setForm ={(form)=>{this.form = form}}
+                    />
                 </Modal>
                 {/* 更新 */}
                 <Modal
