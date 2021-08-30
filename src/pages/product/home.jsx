@@ -115,8 +115,8 @@ class ProductHome extends React.Component{
     updateStatus = async (productId, status) => {
         const result = await reqUpdateStatus(productId, status)
         if(result.status===0) {
-        message.success('更新商品成功')
-        this.getProducts(this.pageNum)
+            message.success('更新商品成功')
+            this.getProducts(this.pageNum)
         }
     }
 

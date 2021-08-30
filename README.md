@@ -152,5 +152,8 @@
         路由完全匹配： exact
         ant组件，title中的render渲染列表
                 分页显示-动态传值
+        详情：   dangerouslySetInnerHTML 类似于 v-html
+                路由传值：this.props.history.push('/product/detail', {product})
+                Promise.all 一次性发送多个请求, 只有都成功了, 才正常处理
 
-    61
+    67

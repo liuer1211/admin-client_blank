@@ -22,6 +22,9 @@ export const reqAddCategory= (categoryName, parentId) => ajax(BASE + '/manage/ca
 // 修改商品分类
 export const reqUpdateCategory= ({categoryName, categoryId}) => ajax(BASE + '/manage/category/update', {categoryName, categoryId}, 'post');
 
+// 获取一个分类
+export const reqCategory = (categoryId) => ajax(BASE + '/manage/category/info', {categoryId})
+
 /*
 搜索商品分页列表 (根据商品名称/商品描述)
 searchType: 搜索的类型, productName/productDesc
