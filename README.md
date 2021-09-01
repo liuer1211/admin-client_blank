@@ -155,5 +155,6 @@
         详情：   dangerouslySetInnerHTML 类似于 v-html
                 路由传值：this.props.history.push('/product/detail', {product})
                 Promise.all 一次性发送多个请求, 只有都成功了, 才正常处理
+                子路由侧边栏不打开，不选中 - 修复
 
-    67
+    76

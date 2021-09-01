@@ -69,9 +69,13 @@ class LeftNav extends Component{
 
                 // 当前子菜单选中，并是打开状态，刷新页面，会被闭合--解决这个bug
                 // 查找一个与当前请求路径匹配的子item
+                // const citem = item.children.find(citem=>
+                //     citem.key === path
+                // )
                 const citem = item.children.find(citem=>
-                    citem.key === path
-                )
+                    path.indexOf(citem.key) === 0
+                ) // 当前请求的是商品或其子路由界面
+
                 // 如果存在，说明当前item的字列表需要打开
                 if(citem) {
                     this.openKey = item.key;
@@ -109,7 +113,11 @@ class LeftNav extends Component{
     render() {
 
         // 得到当前路径
-        const path = this.props.location.pathname
+        let path = this.props.location.pathname
+
+        if(path.indexOf('/product')===0){ // 当前请求的是商品或其子路由界面
+            path = '/product'
+        }
 
         // 得到需要打开菜单项的key，再获得openKey-------
         const openKey = this.openKey
